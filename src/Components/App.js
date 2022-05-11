@@ -14,6 +14,7 @@ export default function App() {
         <Routes>
           <Route path="/sign-up" element={<SignUp />} />
           <Route path="/" element={<SignIn />} />
+          <Route path="/product/:id" element={<Product />} />
         </Routes>
       </BrowserRouter>
     </UserProvider>
