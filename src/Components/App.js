@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import SignUp from "./SignUp/SignUp";
 import SignIn from "./SignIn/SignIn";
 import UserProvider from "../Context/UserContext ";
+import Product from "./Product";
 
 import GlobalStyles from "../GlobalStyles";
 
@@ -18,5 +19,5 @@ export default function App() {
         </Routes>
       </BrowserRouter>
     </UserProvider>
-  )
+  );
 }

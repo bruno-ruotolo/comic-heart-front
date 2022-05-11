@@ -20,13 +20,14 @@ export default function Product() {
       }
     }
     getProduct();
-  }, []);
-
+  }, [id]);
+  console.log(product);
   async function handleButton() {
     const URL = "http://localhost:5000";
     try {
-      const promise = await axios.put(`${URL}/product/${id}`);
+      const promise = await axios.put(`${URL}/addProduct/${id}`);
       //TODO encaminhar para a página listagem de produtos
+      console.log(promise.data);
       navigate("/");
     } catch (e) {
       console.log("Houve um problema ao adicionar o item ao carrinho" + e);
@@ -35,10 +36,12 @@ export default function Product() {
 
   return (
     <ProductSection>
-      <h1>{product.name}</h1>
-      <img src={product.image} alt=""></img>
-      <h2>{product.value}</h2>
-      <p>{product.description}</p>
+      <h1>{product[0].name}</h1>
+      <img src={product[0].image} alt=""></img>
+      <h2>R$ {product[0].value}</h2>
+      <div>
+        <p>{product[0].description}</p>
+      </div>
 
       <button
         onClick={() => {
@@ -51,4 +54,54 @@ export default function Product() {
   );
 }
 
-const ProductSection = styled.section``;
+const ProductSection = styled.section`
+  font-family: "Lexend Deca";
+  font-style: normal;
+  color: #f3eed9;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  h1 {
+    font-weight: 700;
+    font-size: 28px;
+    line-height: 35px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin-top: 23px;
+    margin-bottom: 14px;
+  }
+  img {
+    width: 184px;
+    height: 265px;
+    border-radius: 5px;
+  }
+  h2 {
+    font-weight: 700;
+    font-size: 40px;
+    line-height: 50px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin-top: 14px;
+    margin-bottom: 18px;
+  }
+  div {
+    width: 65%;
+  }
+  p {
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 20px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 50px;
+  }
+  button {
+    width: 337px;
+    height: 47px;
+    box-shadow: inset 0px 0px 2px #4e0000;
+    border-radius: 8px;
+  }
+`;
