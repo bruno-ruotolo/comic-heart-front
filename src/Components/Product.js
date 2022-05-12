@@ -1,46 +1,61 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
+import { UserContext } from "../Context/UserContext ";
 
 export default function Product() {
   const [product, setProduct] = useState({});
   const { id } = useParams();
   const navigate = useNavigate();
+  const { userInfos } = useContext(UserContext);
 
   useEffect(() => {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfos.token}`,
+      },
+    };
     const URL = "http://localhost:5000";
     async function getProduct() {
       try {
-        const promise = await axios.get(`${URL}/product/${id}`);
+        const promise = await axios.get(`${URL}/product/${id}`, config);
         setProduct(promise.data);
       } catch (e) {
         console.log("Houve problema na requisição do produto" + e);
       }
     }
     getProduct();
-  }, [id]);
-  console.log(product);
+  }, [id, userInfos.token]);
+
   async function handleButton() {
     const URL = "http://localhost:5000";
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfos.token}`,
+      },
+    };
     try {
-      const promise = await axios.put(`${URL}/addProduct/${id}`);
-      //TODO encaminhar para a página listagem de produtos
+      const promise = await axios.put(`${URL}/addProduct/${id}`, null, config);
+      //TODO ALLAN - ALERT DE ACORDO COM A BIBLIOTECA DO BRUNO.
       console.log(promise.data);
+      alert(promise.data);
       navigate("/");
     } catch (e) {
       console.log("Houve um problema ao adicionar o item ao carrinho" + e);
+      //AQUI TAMBÉM
+      alert("Ocorreu um erro na adição ao carrinho :(");
     }
   }
 
   return (
     <ProductSection>
-      <h1>{product[0].name}</h1>
-      <img src={product[0].image} alt=""></img>
-      <h2>R$ {product[0].value}</h2>
+      <h1>{product[0]?.name}</h1>
+      <img src={product[0]?.image} alt=""></img>
+      <h2>R$ {product[0]?.value}</h2>
       <div>
-        <p>{product[0].description}</p>
+        <p>{product[0]?.description}</p>
       </div>
 
       <button
