@@ -12,6 +12,7 @@ export default function Cart() {
   const [total, setTotal] = useState(0);
   const [totalItems, setTotalItems] = useState(0);
   console.log(cart);
+
   useEffect(() => {
     const config = {
       headers: {
@@ -33,18 +34,24 @@ export default function Cart() {
         setTotal(somatorio);
       } catch (e) {
         console.log("Houve problema na requisição do carrinho" + e);
-        // alert("A sessão está expirada, logue novamente");
-        // navigate("/");
+        alert("A sessão está expirada, logue novamente");
+        navigate("/");
       }
     }
     getCart();
   }, [userInfos.token, navigate]);
 
+  function handleButton() {
+    navigate("/confirm", { state: { totalValue: total } });
+  }
+
   return (
     <>
       <Header />
       <CartSection>
-        <button>Fechar compra ({totalItems} Itens)</button>
+        <button onClick={() => handleButton()}>
+          Fechar compra ({totalItems} Itens)
+        </button>
         {cart?.map((cart) => {
           return (
             <div id={cart._id}>
