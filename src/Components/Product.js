@@ -83,6 +83,7 @@ const ProductSection = styled.section`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin-top: 70px;
   h1 {
     font-weight: 700;
     font-size: 28px;
@@ -112,6 +113,8 @@ const ProductSection = styled.section`
     width: 90%;
     text-align:justify;
     max-width: 500px;
+    max-height: 95px;
+    overflow: scroll;
     //Bruno: Adicionei umas propriedades para a descrição ficar alinhada 
   }
   p {
@@ -120,12 +123,14 @@ const ProductSection = styled.section`
     line-height: 20px;
     display: flex;
     align-items: center;
-    margin-bottom: 30px;
+    margin-bottom: 15px;
     //Bruno: Percebi no layout q fiz q o botão tava muito longe da descrição no mobile, diminui um pouco
   }
   button {
     width: 337px;
     height: 47px;
+    margin-top: 20px;
+    margin-bottom: 15px;
     //Bruno: Removi algumas propriedas porque coloquei como global para todos os botões.
   }
 `;
