@@ -54,7 +54,7 @@ export default function Cart() {
         </button>
         {cart?.map((cart) => {
           return (
-            <div id={cart._id}>
+            <ContainerCart key={cart._id}>
               <img src={cart.image} alt=""></img>
               <article>
                 <h2>{cart.name}</h2>
@@ -66,7 +66,7 @@ export default function Cart() {
                 </ContainerQuant>
               </article>
               <ion-icon name="trash-bin"></ion-icon>
-            </div>
+            </ContainerCart>
           );
         })}
         <footer>
@@ -89,14 +89,44 @@ const CartSection = styled.section`
     height: 47px;
   }
 
-  div {
-    display: flex;
-    width: 338px;
-    height: 146px;
+  footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
     background: #f3eed9;
-    border-radius: 5px;
-    margin-top: 13px;
-    position: relative;
+    box-shadow: 0px -7px 4px rgba(0, 0, 0, 0.25);
+    height: 51px;
+    font-family: "Fredoka One";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 15px;
+    color: #4e0000;
+    margin-top: 15px;
+  }
+`;
+
+const ContainerCart = styled.div`
+  display: flex;
+  width: 338px;
+  height: 146px;
+  background: #f3eed9;
+  border-radius: 5px;
+  margin-top: 13px;
+  position: relative;
+
+  p {
+    font-family: "Fredoka One";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 19px;
+    color: #4e0000;
   }
 
   img {
@@ -127,15 +157,6 @@ const CartSection = styled.section`
     margin-left: 13px;
   }
 
-  div p {
-    font-family: "Fredoka One";
-    font-style: normal;
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 19px;
-    color: #4e0000;
-  }
-
   ion-icon {
     color: #4e0000;
     font-size: 25px;
@@ -145,30 +166,9 @@ const CartSection = styled.section`
     right: 7px;
     visibility: visible;
   }
-
-  footer {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: #f3eed9;
-    box-shadow: 0px -7px 4px rgba(0, 0, 0, 0.25);
-    height: 51px;
-    font-family: "Fredoka One";
-    font-style: normal;
-    font-weight: 400;
-    font-size: 20px;
-    line-height: 24px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 15px;
-    color: #4e0000;
-    margin-top: 15px;
-  }
 `;
 
-const ContainerQuant = styled.table`
+const ContainerQuant = styled.div`
   position: absolute;
   bottom: 0;
   display: flex;
