@@ -43,7 +43,7 @@ export default function Header() {
 
     const promise = axios.get(`${URL}/main?s=${search}`);
     promise.then(response => {
-      //TODO carregar a lista COM A QUERY
+      //TODO Bruno: carregar a lista COM A QUERY
     });
     promise.catch(e => {
       console.log(e);
@@ -67,7 +67,7 @@ export default function Header() {
               <ion-icon onClick={handleSubmit} type="buttom" name="search"></ion-icon>
             </form>
           </HeaderInput>
-          <Cart>
+          <Cart onClick={() => navigate("/cart")}>
             <ion-icon name="cart"></ion-icon>
             <CartQuantity cart={cart}>
               <p>{cart}</p>
