@@ -30,7 +30,7 @@ export default function Product() {
       }
     }
     getProduct();
-  }, [id, userInfos.token]);
+  }, [id, userInfos.token, navigate]);
 
   async function handleButton() {
     const URL = "http://localhost:5000";
