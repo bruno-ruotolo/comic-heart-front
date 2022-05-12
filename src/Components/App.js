@@ -7,6 +7,7 @@ import UserProvider from "../Context/UserContext ";
 import Product from "./Product";
 
 import GlobalStyles from "../GlobalStyles";
+import Cart from "./Cart";
 
 export default function App() {
   return (
@@ -16,8 +17,9 @@ export default function App() {
         <Routes>
           <Route path="/sign-up" element={<SignUp />} />
           <Route path="/" element={<SignIn />} />
-          <Route path="/product/:id" element={<Product />} />
           <Route path="/main" element={<Main />} />
+          <Route path="/product/:id" element={<Product />} />
+          <Route path="/cart" element={<Cart />} />
         </Routes>
       </BrowserRouter>
     </UserProvider>

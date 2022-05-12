@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
 import { UserContext } from "../Context/UserContext ";
+import Header from "./Header/Header";
 
 export default function Product() {
   const [product, setProduct] = useState({});
@@ -24,6 +25,8 @@ export default function Product() {
         setProduct(promise.data);
       } catch (e) {
         console.log("Houve problema na requisição do produto" + e);
+        alert("A sessão está expirada, logue novamente");
+        navigate("/");
       }
     }
     getProduct();
@@ -49,25 +52,26 @@ export default function Product() {
     }
   }
 
-  return !product ? (
-    <p>Loading</p>
-  ) : (
-    <ProductSection>
-      <h1>{product[0]?.name}</h1>
-      <img src={product[0]?.image} alt=""></img>
-      <h2>R$ {product[0]?.value?.toString().replace(".", ",")}</h2>
-      <div>
-        <p>{product[0]?.description}</p>
-      </div>
+  return (
+    <>
+      <Header />
+      <ProductSection>
+        <h1>{product[0]?.name}</h1>
+        <img src={product[0]?.image} alt=""></img>
+        <h2>R$ {product[0]?.value?.toString().replace(".", ",")}</h2>
+        <div>
+          <p>{product[0]?.description}</p>
+        </div>
 
-      <button
-        onClick={() => {
-          handleButton();
-        }}
-      >
-        Adicionar ao Carrinho
-      </button>
-    </ProductSection>
+        <button
+          onClick={() => {
+            handleButton();
+          }}
+        >
+          Adicionar ao Carrinho
+        </button>
+      </ProductSection>
+    </>
   );
 }
 
