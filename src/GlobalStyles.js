@@ -89,7 +89,7 @@ body {
 
   button {
     background-color: #EC665C;
-    border-radius: 5px;
+    border-radius: 8px;
     display:flex;
     align-items:center;
     justify-content:center;
@@ -100,6 +100,7 @@ body {
     font-size: 24px;
     line-height: 29px;
     color: #F3EED9;
+    box-shadow: inset 0px 0px 2px #4e0000;
   }
 
 }
