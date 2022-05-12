@@ -49,11 +49,13 @@ export default function Product() {
     }
   }
 
-  return (
+  return !product ? (
+    <p>Loading</p>
+  ) : (
     <ProductSection>
       <h1>{product[0]?.name}</h1>
       <img src={product[0]?.image} alt=""></img>
-      <h2>R$ {product[0]?.value}</h2>
+      <h2>R$ {product[0]?.value?.toString().replace(".", ",")}</h2>
       <div>
         <p>{product[0]?.description}</p>
       </div>
