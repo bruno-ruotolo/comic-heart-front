@@ -11,6 +11,7 @@ export default function Cart() {
   const [cart, setCart] = useState([]);
   const [total, setTotal] = useState(0);
   const [totalItems, setTotalItems] = useState(0);
+  const [change, setChange] = useState(0);
   console.log(cart);
 
   useEffect(() => {
@@ -39,10 +40,25 @@ export default function Cart() {
       }
     }
     getCart();
-  }, [userInfos.token, navigate]);
+  }, [userInfos.token, navigate, change]);
 
   function handleButton() {
     navigate("/confirm", { state: { totalValue: total } });
+  }
+
+  async function deleteProduct(productId) {
+    const URL = "http://localhost:5000";
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfos.token}`,
+      },
+    };
+    try {
+      await axios.delete(`${URL}/cart/${productId}`, config);
+      setChange(change + 1);
+    } catch (e) {
+      console.log("Houve problema na exclusão do produto do seu carrinho" + e);
+    }
   }
 
   return (
@@ -65,7 +81,12 @@ export default function Cart() {
                   <ion-icon name="add-circle"></ion-icon>
                 </ContainerQuant>
               </article>
-              <ion-icon name="trash-bin"></ion-icon>
+              <ion-icon
+                name="trash-bin"
+                onClick={() => {
+                  deleteProduct(cart._id);
+                }}
+              ></ion-icon>
             </ContainerCart>
           );
         })}
