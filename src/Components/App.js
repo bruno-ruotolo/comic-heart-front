@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import SignUp from "./SignUp/SignUp";
 import SignIn from "./SignIn/SignIn";
+import Main from "./Main";
 import UserProvider from "../Context/UserContext ";
 import CartProvider from "../Context/CartContext";
 import Product from "./Product";
