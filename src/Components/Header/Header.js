@@ -11,9 +11,8 @@ export default function Header() {
   const navigate = useNavigate();
 
   const { userInfos } = useContext(UserContext);
-  console.log(userInfos)
 
-  const [search, setSearch] = useState("")
+  const [search, setSearch] = useState()
   const [cart, setCart] = useState(0)
 
   useEffect(() => {
@@ -26,7 +25,6 @@ export default function Header() {
     const promise = axios.get(`${URL}/header`, config);
     promise.then(response => {
       const cartArr = response.data;
-      console.log(response.data)
       if (cartArr.length > 0) setCart(cartArr.length)
     });
     promise.catch(e => console.log(e));
@@ -39,22 +37,13 @@ export default function Header() {
 
   function handleSubmit(e) {
     e.preventDefault();
-    const URL = "http://localhost:5000"
-
-    const promise = axios.get(`${URL}/main?s=${search}`);
-    promise.then(response => {
-      //TODO carregar a lista COM A QUERY
-    });
-    promise.catch(e => {
-      console.log(e);
-    })
+    navigate("/main", { state: { search } })
   }
 
   function handleLogout() {
     localStorage.clear();
     navigate("/");
   }
-
 
   return (
     <HeaderStyle>
@@ -67,7 +56,7 @@ export default function Header() {
               <ion-icon onClick={handleSubmit} type="buttom" name="search"></ion-icon>
             </form>
           </HeaderInput>
-          <Cart>
+          <Cart onClick={() => navigate("/cart")}>
             <ion-icon name="cart"></ion-icon>
             <CartQuantity cart={cart}>
               <p>{cart}</p>
@@ -87,6 +76,9 @@ export default function Header() {
 }
 
 const HeaderStyle = styled.header`
+  position:fixed;
+  top: 0;
+  left: 0;
   display:flex;
   align-items:center;
   flex-direction:column;
