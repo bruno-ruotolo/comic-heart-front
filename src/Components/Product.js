@@ -25,6 +25,8 @@ export default function Product() {
         setProduct(promise.data);
       } catch (e) {
         console.log("Houve problema na requisição do produto" + e);
+        alert("A sessão está expirada, logue novamente");
+        navigate("/");
       }
     }
     getProduct();
