@@ -42,6 +42,8 @@ export default function Checkout() {
     getCheckout();
   }, [navigate, userInfos.token]);
   console.log(dadosUser);
+  //TODO Pensar em como tratar esses inputs de radio e como pegar a info de cada um... Ainda por cima, ver a lógica
+  // para que quando estiver selecionado no cartão de crédito, surgir com os 3 inputs novos --> Num do cartao, vencimento e CVV
   return (
     <CheckoutSection>
       <ion-icon name="caret-back"></ion-icon>
