@@ -1,8 +1,11 @@
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 
-export default function ProductComponent({ name, value, description, image }) {
+export default function ProductComponent({ name, value, description, image, _id }) {
+  const navigate = useNavigate();
+
   return (
-    <ProductSection>
+    <ProductSection onClick={() => navigate(`/product/${_id}`)}>
       <img src={image} alt="Comic" />
       <ComicInfos>
         <h2>{name}</h2>
@@ -25,7 +28,7 @@ const ProductSection = styled.section`
   height: 177px;
 
   img {
-    width: 109;
+    width: 109px;
     height: 157px;
     border-radius: 5px;
   }
@@ -36,7 +39,7 @@ const ComicInfos = styled.div`
   flex-direction: column;
   justify-content:space-between;
   height: 100%;
-  width: 100%;
+  width: 211px;
   margin-left: 10px;
   overflow: hidden;
 

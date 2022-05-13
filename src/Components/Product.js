@@ -3,6 +3,8 @@ import { useNavigate } from "react-router";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
+import Swal from "sweetalert2";
+
 import { UserContext } from "../Context/UserContext ";
 import Header from "./Header/Header";
 
@@ -25,7 +27,15 @@ export default function Product() {
         setProduct(promise.data);
       } catch (e) {
         console.log("Houve problema na requisição do produto" + e);
-        alert("A sessão está expirada, logue novamente");
+        Swal.fire({
+          icon: "warning",
+          title: "Sessão Experidada",
+          text: 'Faça Login Novamente',
+          width: 326,
+          background: "#F3EED9",
+          confirmButtonColor: "#4E0000",
+          color: "#4E0000"
+        });
         navigate("/");
       }
     }
@@ -41,14 +51,26 @@ export default function Product() {
     };
     try {
       const promise = await axios.put(`${URL}/addProduct/${id}`, null, config);
-      //TODO ALLAN - ALERT DE ACORDO COM A BIBLIOTECA DO BRUNO.
-      console.log(promise.data);
-      alert(promise.data);
+      Swal.fire({
+        icon: "success",
+        title: "Produto Adicionado ao Carrinho",
+        width: 326,
+        background: "#F3EED9",
+        confirmButtonColor: "#4E0000",
+        color: "#4E0000"
+      });
       navigate("/");
     } catch (e) {
       console.log("Houve um problema ao adicionar o item ao carrinho" + e);
-      //AQUI TAMBÉM
-      alert("Ocorreu um erro na adição ao carrinho :(");
+      Swal.fire({
+        icon: "error",
+        title: "Ops! Algo deu Errado",
+        text: 'Tente Novamamente Mais Tarde',
+        width: 326,
+        background: "#F3EED9",
+        confirmButtonColor: "#4E0000",
+        color: "#4E0000"
+      })
     }
   }
 
@@ -83,6 +105,7 @@ const ProductSection = styled.section`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin-top: 70px;
   h1 {
     font-weight: 700;
     font-size: 28px;
@@ -112,6 +135,8 @@ const ProductSection = styled.section`
     width: 90%;
     text-align:justify;
     max-width: 500px;
+    max-height: 95px;
+    overflow: scroll;
     //Bruno: Adicionei umas propriedades para a descrição ficar alinhada 
   }
   p {
@@ -120,12 +145,14 @@ const ProductSection = styled.section`
     line-height: 20px;
     display: flex;
     align-items: center;
-    margin-bottom: 30px;
+    margin-bottom: 15px;
     //Bruno: Percebi no layout q fiz q o botão tava muito longe da descrição no mobile, diminui um pouco
   }
   button {
     width: 337px;
     height: 47px;
+    margin-top: 20px;
+    margin-bottom: 15px;
     //Bruno: Removi algumas propriedas porque coloquei como global para todos os botões.
   }
 `;

@@ -2,12 +2,13 @@ import { useContext, useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import styled from "styled-components"
 import axios from "axios"
+import Swal from "sweetalert2"
 
 import { UserContext } from "../../Context/UserContext "
 
 import LogoHQ from "./LogoSemTexto.png"
 
-export default function Header() {
+export default function Header({ change }) {
   const navigate = useNavigate();
 
   const { userInfos } = useContext(UserContext);
@@ -16,6 +17,8 @@ export default function Header() {
   const [cart, setCart] = useState(0)
 
   useEffect(() => {
+    let unmounted = false;
+    let quantity = 0;
     const config = {
       headers: {
         Authorization: `Bearer ${userInfos.token}`
@@ -25,10 +28,27 @@ export default function Header() {
     const promise = axios.get(`${URL}/header`, config);
     promise.then(response => {
       const cartArr = response.data;
-      if (cartArr.length > 0) setCart(cartArr.length)
+      if (cartArr.length > 0) {
+        cartArr.forEach(cartQuant => {
+          quantity += cartQuant.quant
+        });
+      }
+      if (!unmounted) setCart(quantity);
     });
-    promise.catch(e => console.log(e));
-  }, [userInfos.token])
+    promise.catch(e => {
+      Swal.fire({
+        icon: "error",
+        title: "Ops! Algo deu Errado",
+        text: 'Tente Novamamente Mais Tarde',
+        width: 326,
+        background: "#F3EED9",
+        confirmButtonColor: "#4E0000",
+        color: "#4E0000"
+      })
+      console.log(e)
+    });
+    return () => unmounted = true
+  }, [userInfos.token, change])
 
 
   function handleInput(e) {
