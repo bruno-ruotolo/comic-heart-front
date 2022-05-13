@@ -2,6 +2,8 @@ import { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router";
 import axios from "axios";
 import styled from "styled-components";
+import Swal from "sweetalert2";
+
 import { UserContext } from "../Context/UserContext ";
 import Header from "./Header/Header";
 
@@ -12,7 +14,7 @@ export default function Cart() {
   const [total, setTotal] = useState(0);
   const [totalItems, setTotalItems] = useState(0);
   const [change, setChange] = useState(0);
-  console.log(cart);
+  const [cartStatus, setCartStatus] = useState(false);
 
   useEffect(() => {
     const config = {
@@ -35,7 +37,15 @@ export default function Cart() {
         setTotal(somatorio.toFixed(2));
       } catch (e) {
         console.log("Houve problema na requisição do carrinho" + e);
-        alert("A sessão está expirada, logue novamente");
+        Swal.fire({
+          icon: "warning",
+          title: "Sessão Experidada",
+          text: 'Faça Login Novamente',
+          width: 326,
+          background: "#F3EED9",
+          confirmButtonColor: "#4E0000",
+          color: "#4E0000"
+        });
         navigate("/");
       }
     }
@@ -58,10 +68,20 @@ export default function Cart() {
       setChange(change + 1);
     } catch (e) {
       console.log("Houve problema na exclusão do produto do seu carrinho" + e);
+      Swal.fire({
+        icon: "error",
+        title: "Ops! Algo deu Errado",
+        text: 'Tente Novamamente Mais Tarde',
+        width: 326,
+        background: "#F3EED9",
+        confirmButtonColor: "#4E0000",
+        color: "#4E0000"
+      });
     }
   }
 
   async function handleQuant(productId, increaseQuant) {
+    setCartStatus(true);
     const URL = "http://localhost:5000";
     const config = {
       headers: {
@@ -75,16 +95,27 @@ export default function Cart() {
         config
       );
       setChange(change + 1);
+      setTimeout(() => { setCartStatus(false) }, 200);
     } catch (e) {
       console.log(
         "Houve problema na mudança de quantidade do produto do seu carrinho" + e
       );
+      Swal.fire({
+        icon: "error",
+        title: "Ops! Algo deu Errado",
+        text: 'Tente Novamamente Mais Tarde',
+        width: 326,
+        background: "#F3EED9",
+        confirmButtonColor: "#4E0000",
+        color: "#4E0000"
+      });
+      setCartStatus(false);
     }
   }
 
-  return (
+  return !cart.length <= 0 ? (
     <>
-      <Header />
+      <Header change={change} />
       <CartSection>
         <button onClick={() => handleButton()}>
           Fechar compra ({totalItems} Itens)
@@ -96,19 +127,12 @@ export default function Cart() {
               <article>
                 <h2>{cart.name}</h2>
                 <h3>R$ {cart.value.toString().replace(".", ",")}</h3>
-                <ContainerQuant>
-                  {cart.quant > 1 ? (
-                    <ion-icon
-                      name="remove-circle"
-                      onClick={() => handleQuant(cart._id, false)}
-                    ></ion-icon>
-                  ) : (
-                    <ion-icon
-                      className="hidden"
-                      name="remove-circle"
-                    ></ion-icon>
-                  )}
-
+                <ContainerQuant cartStatus={cartStatus} cartQuant={cart.quant}>
+                  <ion-icon
+                    name="remove-circle"
+                    onClick={() => handleQuant(cart._id, false)}
+                  >
+                  </ion-icon>
                   <p>{cart.quant}</p>
                   <ion-icon
                     name="add-circle"
@@ -131,17 +155,26 @@ export default function Cart() {
         </footer>
       </CartSection>
     </>
-  );
+  ) : <CartSection>
+    <Header />
+    <h4>Carrinho Vazio</h4>
+  </CartSection>;
 }
 
 const CartSection = styled.section`
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-top: 90px;
 
-  .hidden {
-    visibility: hidden;
-  }
+  h4 {
+      margin-top: 200px;
+      font-family: 'Fredoka One', cursive;
+      font-weight: 400;
+      font-size: 20px;
+      line-height: 19px;
+      color: #F3EED9;
+    }
 
   button {
     margin-top: 16px;
@@ -234,7 +267,13 @@ const ContainerQuant = styled.div`
   display: flex;
   margin-left: 10px;
   margin-top: 5px;
+
+  ion-icon:first-child {
+    visibility: ${({ cartQuant }) => cartQuant <= 1 ? "hidden" : "visible"} 
+  }
+
   ion-icon {
+    pointer-events: ${(props) => props.cartStatus ? "none" : "auto"};
     position: relative;
     margin-left: 15px;
   }

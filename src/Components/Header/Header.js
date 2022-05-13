@@ -8,7 +8,7 @@ import { UserContext } from "../../Context/UserContext "
 
 import LogoHQ from "./LogoSemTexto.png"
 
-export default function Header() {
+export default function Header({ change }) {
   const navigate = useNavigate();
 
   const { userInfos } = useContext(UserContext);
@@ -38,7 +38,7 @@ export default function Header() {
     promise.catch(e => {
       Swal.fire({
         icon: "error",
-        title: "Algo deu Errado",
+        title: "Ops! Algo deu Errado",
         text: 'Tente Novamamente Mais Tarde',
         width: 326,
         background: "#F3EED9",
@@ -48,7 +48,7 @@ export default function Header() {
       console.log(e)
     });
     return () => unmounted = true
-  }, [userInfos.token])
+  }, [userInfos.token, change])
 
 
   function handleInput(e) {

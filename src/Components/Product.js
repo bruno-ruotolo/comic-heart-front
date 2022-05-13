@@ -3,6 +3,8 @@ import { useNavigate } from "react-router";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
+import Swal from "sweetalert2";
+
 import { UserContext } from "../Context/UserContext ";
 import Header from "./Header/Header";
 
@@ -25,7 +27,15 @@ export default function Product() {
         setProduct(promise.data);
       } catch (e) {
         console.log("Houve problema na requisição do produto" + e);
-        alert("A sessão está expirada, logue novamente");
+        Swal.fire({
+          icon: "warning",
+          title: "Sessão Experidada",
+          text: 'Faça Login Novamente',
+          width: 326,
+          background: "#F3EED9",
+          confirmButtonColor: "#4E0000",
+          color: "#4E0000"
+        });
         navigate("/");
       }
     }
@@ -41,14 +51,26 @@ export default function Product() {
     };
     try {
       const promise = await axios.put(`${URL}/addProduct/${id}`, null, config);
-      //TODO ALLAN - ALERT DE ACORDO COM A BIBLIOTECA DO BRUNO.
-      console.log(promise.data);
-      alert(promise.data);
+      Swal.fire({
+        icon: "success",
+        title: "Produto Adicionado ao Carrinho",
+        width: 326,
+        background: "#F3EED9",
+        confirmButtonColor: "#4E0000",
+        color: "#4E0000"
+      });
       navigate("/");
     } catch (e) {
       console.log("Houve um problema ao adicionar o item ao carrinho" + e);
-      //AQUI TAMBÉM
-      alert("Ocorreu um erro na adição ao carrinho :(");
+      Swal.fire({
+        icon: "error",
+        title: "Ops! Algo deu Errado",
+        text: 'Tente Novamamente Mais Tarde',
+        width: 326,
+        background: "#F3EED9",
+        confirmButtonColor: "#4E0000",
+        color: "#4E0000"
+      })
     }
   }
 

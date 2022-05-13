@@ -32,7 +32,6 @@ export default function SignIn() {
 
   function handleSubmit(e) {
     e.preventDefault();
-    console.log(userSignIn)
     setSignInState(true);
     const URL = "http://localhost:5000";
     const promise = axios.post(`${URL}/`, userSignIn);

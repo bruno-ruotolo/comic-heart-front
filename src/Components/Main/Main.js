@@ -57,7 +57,7 @@ export default function Main() {
           background: "#F3EED9",
           confirmButtonColor: "#4E0000",
           color: "#4E0000"
-        })
+        });
         navigate("/");
         console.log(e)
       })
@@ -67,23 +67,28 @@ export default function Main() {
 
 
   return !productsState ? (
-    <>
-      <ProductsList>
-        <Header />
-        {products.map(({ name, value, description, image, _id }) => {
-          return (
-            <ProductComponent
-              key={_id}
-              _id={_id}
-              name={name.length > 23 ? name.slice(0, 23) + "..." : name}
-              value={value.toString().replace(".", ",")}
-              description={description.length > 100 ? description.slice(0, 100) + "..." : description}
-              image={image}
-            />
-          )
-        })}
-      </ProductsList>
-    </>
+    products.length > 0 ? (
+      <>
+        <ProductsList>
+          <Header />
+          {products.map(({ name, value, description, image, _id }) => {
+            return (
+              <ProductComponent
+                key={_id}
+                _id={_id}
+                name={name.length > 23 ? name.slice(0, 23) + "..." : name}
+                value={value.toString().replace(".", ",")}
+                description={description.length > 100 ? description.slice(0, 100) + "..." : description}
+                image={image}
+              />
+            )
+          })}
+        </ProductsList>
+      </>
+    ) : <ProductsList>
+      <Header />
+      <h3>Nenhum Produto Encontrado</h3>
+    </ProductsList>
   ) :
     <ProductsList>
       <Bars height={500} width={100} color="#F3EED9" />
@@ -98,4 +103,13 @@ const ProductsList = styled.main`
     width: 100vw;
     max-width: 1000px;
     margin-top: 87px;
+
+    h3 {
+      margin-top: 200px;
+      font-family: 'Fredoka One', cursive;
+      font-weight: 400;
+      font-size: 20px;
+      line-height: 19px;
+      color: #F3EED9;
+    }
     `
