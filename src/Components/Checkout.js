@@ -12,6 +12,7 @@ export default function Checkout() {
   const location = useLocation();
   const { totalValue } = location.state;
   const [dadosUser, setDadosUser] = useState({});
+  const [cpf, setCpf] = useState("");
 
   useEffect(() => {
     const config = {
@@ -61,13 +62,23 @@ export default function Checkout() {
           </div>
         </ContainerRadio>
         <ContainerRadio>
-          <input type="radio" name="formaPagamento" value="cartao"></input>{" "}
+          <input type="radio" name="formaPagamento" value="cartao"></input>
           <label>Cartão de Crédito</label>
         </ContainerRadio>
-        <ClienteEmail>Cliente: {dadosUser?.name} </ClienteEmail>
-        <ClienteEmail>E-mail: {dadosUser?.email} </ClienteEmail>
+        <ClienteEmail>
+          <span>Cliente:</span> {dadosUser?.name}
+        </ClienteEmail>
+        <ClienteEmail>
+          <span>E-mail:</span> {dadosUser?.email}
+        </ClienteEmail>
         <CPF>Digite seu CPF:</CPF>
-        <InputCpf type="text" placeholder="CPF"></InputCpf>
+        <InputCpf
+          type="text"
+          placeholder="CPF"
+          value={cpf}
+          onChange={(e) => setCpf(e.target.value)}
+          required
+        ></InputCpf>
         <Submit type="submit">Confirmar (R$ {totalValue})</Submit>
       </form>
     </CheckoutSection>
@@ -101,6 +112,10 @@ const CheckoutSection = styled.section`
     display: flex;
     font-family: "Lexend Deca";
     font-style: normal;
+  }
+
+  span {
+    font-weight: 700;
   }
 `;
 
