@@ -32,7 +32,7 @@ export default function Cart() {
           somatorioItem += cart.quant;
         });
         setTotalItems(somatorioItem);
-        setTotal(somatorio);
+        setTotal(somatorio.toFixed(2));
       } catch (e) {
         console.log("Houve problema na requisição do carrinho" + e);
         alert("A sessão está expirada, logue novamente");
@@ -61,6 +61,27 @@ export default function Cart() {
     }
   }
 
+  async function handleQuant(productId, increaseQuant) {
+    const URL = "http://localhost:5000";
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfos.token}`,
+      },
+    };
+    try {
+      await axios.post(
+        `${URL}/changeQuant`,
+        { productId, increaseQuant },
+        config
+      );
+      setChange(change + 1);
+    } catch (e) {
+      console.log(
+        "Houve problema na mudança de quantidade do produto do seu carrinho" + e
+      );
+    }
+  }
+
   return (
     <>
       <Header />
@@ -74,11 +95,25 @@ export default function Cart() {
               <img src={cart.image} alt=""></img>
               <article>
                 <h2>{cart.name}</h2>
-                <h3>R$ {cart.value}</h3>
+                <h3>R$ {cart.value.toString().replace(".", ",")}</h3>
                 <ContainerQuant>
-                  <ion-icon name="remove-circle"></ion-icon>
+                  {cart.quant > 1 ? (
+                    <ion-icon
+                      name="remove-circle"
+                      onClick={() => handleQuant(cart._id, false)}
+                    ></ion-icon>
+                  ) : (
+                    <ion-icon
+                      className="hidden"
+                      name="remove-circle"
+                    ></ion-icon>
+                  )}
+
                   <p>{cart.quant}</p>
-                  <ion-icon name="add-circle"></ion-icon>
+                  <ion-icon
+                    name="add-circle"
+                    onClick={() => handleQuant(cart._id, true)}
+                  ></ion-icon>
                 </ContainerQuant>
               </article>
               <ion-icon
@@ -92,7 +127,7 @@ export default function Cart() {
         })}
         <footer>
           <p>Subtotal</p>
-          <p>R$ {total}</p>
+          <p>R$ {total.toString().replace(".", ",")}</p>
         </footer>
       </CartSection>
     </>
@@ -103,6 +138,10 @@ const CartSection = styled.section`
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  .hidden {
+    visibility: hidden;
+  }
 
   button {
     margin-top: 16px;
