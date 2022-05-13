@@ -68,8 +68,8 @@ export default function Main() {
 
   return !productsState ? (
     <>
-      <Header />
       <ProductsList>
+        <Header />
         {products.map(({ name, value, description, image, _id }) => {
           return (
             <ProductComponent
@@ -86,7 +86,6 @@ export default function Main() {
     </>
   ) :
     <ProductsList>
-      <Header />
       <Bars height={500} width={100} color="#F3EED9" />
     </ProductsList >
 }

@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom"
 import styled from "styled-components"
 import axios from "axios"
 import Swal from "sweetalert2"
-import { Rings, Bars } from "react-loader-spinner"
 
 import { UserContext } from "../../Context/UserContext "
 
@@ -16,10 +15,10 @@ export default function Header() {
 
   const [search, setSearch] = useState()
   const [cart, setCart] = useState(0)
-  const [headerState, setHeaderState] = useState(false);
 
   useEffect(() => {
-    setHeaderState(true);
+    let unmounted = false;
+    let quantity = 0;
     const config = {
       headers: {
         Authorization: `Bearer ${userInfos.token}`
@@ -28,16 +27,13 @@ export default function Header() {
     const URL = "http://localhost:5000"
     const promise = axios.get(`${URL}/header`, config);
     promise.then(response => {
-      setHeaderState(false);
       const cartArr = response.data;
-      let quantity = 0;
       if (cartArr.length > 0) {
         cartArr.forEach(cartQuant => {
           quantity += cartQuant.quant
         });
       }
-      setCart(quantity);
-
+      if (!unmounted) setCart(quantity);
     });
     promise.catch(e => {
       Swal.fire({
@@ -51,6 +47,7 @@ export default function Header() {
       })
       console.log(e)
     });
+    return () => unmounted = true
   }, [userInfos.token])
 
 
@@ -75,23 +72,21 @@ export default function Header() {
           <img src={LogoHQ} alt="Logo" onClick={() => navigate("/main")} />
           <HeaderInput>
             <form onSubmit={handleSubmit}>
-              <input type="text" onChange={(e) => handleInput(e)} disabled={headerState} />
+              <input type="text" onChange={(e) => handleInput(e)} />
               <ion-icon onClick={handleSubmit} type="buttom" name="search"></ion-icon>
             </form>
           </HeaderInput>
           <Cart onClick={() => navigate("/cart")}>
             <ion-icon name="cart"></ion-icon>
             <CartQuantity cart={cart}>
-              <p>{headerState
-                ? <Rings width={35} height={35} color="#F3EED9" />
-                : cart}</p>
+              <p>{cart}</p>
             </CartQuantity>
           </Cart>
         </TopHeader>
         <BottomHeader>
           <UserIcon>
             <ion-icon name="person"></ion-icon>
-            <p>{headerState ? <Bars color="#4E0000" width={20} height={20} /> : userInfos.name}</p>
+            <p>{userInfos.name}</p>
           </UserIcon>
           <ion-icon onClick={handleLogout} name="log-out"></ion-icon>
         </BottomHeader>
