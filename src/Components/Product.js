@@ -30,11 +30,11 @@ export default function Product() {
         Swal.fire({
           icon: "warning",
           title: "Sessão Experidada",
-          text: 'Faça Login Novamente',
+          text: "Faça Login Novamente",
           width: 326,
           background: "#F3EED9",
           confirmButtonColor: "#4E0000",
-          color: "#4E0000"
+          color: "#4E0000",
         });
         navigate("/");
       }
@@ -50,14 +50,14 @@ export default function Product() {
       },
     };
     try {
-      const promise = await axios.put(`${URL}/addProduct/${id}`, null, config);
+      await axios.put(`${URL}/addProduct/${id}`, null, config);
       Swal.fire({
         icon: "success",
         title: "Produto Adicionado ao Carrinho",
         width: 326,
         background: "#F3EED9",
         confirmButtonColor: "#4E0000",
-        color: "#4E0000"
+        color: "#4E0000",
       });
       navigate("/");
     } catch (e) {
@@ -65,12 +65,12 @@ export default function Product() {
       Swal.fire({
         icon: "error",
         title: "Ops! Algo deu Errado",
-        text: 'Tente Novamamente Mais Tarde',
+        text: "Tente Novamamente Mais Tarde",
         width: 326,
         background: "#F3EED9",
         confirmButtonColor: "#4E0000",
-        color: "#4E0000"
-      })
+        color: "#4E0000",
+      });
     }
   }
 
@@ -133,11 +133,11 @@ const ProductSection = styled.section`
   }
   div {
     width: 90%;
-    text-align:justify;
+    text-align: justify;
     max-width: 500px;
     max-height: 95px;
     overflow: scroll;
-    //Bruno: Adicionei umas propriedades para a descrição ficar alinhada 
+    //Bruno: Adicionei umas propriedades para a descrição ficar alinhada
   }
   p {
     font-weight: 400;

@@ -40,11 +40,11 @@ export default function Cart() {
         Swal.fire({
           icon: "warning",
           title: "Sessão Experidada",
-          text: 'Faça Login Novamente',
+          text: "Faça Login Novamente",
           width: 326,
           background: "#F3EED9",
           confirmButtonColor: "#4E0000",
-          color: "#4E0000"
+          color: "#4E0000",
         });
         navigate("/");
       }
@@ -53,7 +53,7 @@ export default function Cart() {
   }, [userInfos.token, navigate, change]);
 
   function handleButton() {
-    navigate("/confirm", { state: { totalValue: total } });
+    navigate("/checkout", { state: { totalValue: total } });
   }
 
   async function deleteProduct(productId) {
@@ -71,11 +71,11 @@ export default function Cart() {
       Swal.fire({
         icon: "error",
         title: "Ops! Algo deu Errado",
-        text: 'Tente Novamamente Mais Tarde',
+        text: "Tente Novamamente Mais Tarde",
         width: 326,
         background: "#F3EED9",
         confirmButtonColor: "#4E0000",
-        color: "#4E0000"
+        color: "#4E0000",
       });
     }
   }
@@ -95,7 +95,9 @@ export default function Cart() {
         config
       );
       setChange(change + 1);
-      setTimeout(() => { setCartStatus(false) }, 200);
+      setTimeout(() => {
+        setCartStatus(false);
+      }, 200);
     } catch (e) {
       console.log(
         "Houve problema na mudança de quantidade do produto do seu carrinho" + e
@@ -103,11 +105,11 @@ export default function Cart() {
       Swal.fire({
         icon: "error",
         title: "Ops! Algo deu Errado",
-        text: 'Tente Novamamente Mais Tarde',
+        text: "Tente Novamamente Mais Tarde",
         width: 326,
         background: "#F3EED9",
         confirmButtonColor: "#4E0000",
-        color: "#4E0000"
+        color: "#4E0000",
       });
       setCartStatus(false);
     }
@@ -131,8 +133,7 @@ export default function Cart() {
                   <ion-icon
                     name="remove-circle"
                     onClick={() => handleQuant(cart._id, false)}
-                  >
-                  </ion-icon>
+                  ></ion-icon>
                   <p>{cart.quant}</p>
                   <ion-icon
                     name="add-circle"
@@ -155,10 +156,12 @@ export default function Cart() {
         </footer>
       </CartSection>
     </>
-  ) : <CartSection>
-    <Header />
-    <h4>Carrinho Vazio</h4>
-  </CartSection>;
+  ) : (
+    <CartSection>
+      <Header />
+      <h4>Carrinho Vazio</h4>
+    </CartSection>
+  );
 }
 
 const CartSection = styled.section`
@@ -168,13 +171,13 @@ const CartSection = styled.section`
   margin-top: 90px;
 
   h4 {
-      margin-top: 200px;
-      font-family: 'Fredoka One', cursive;
-      font-weight: 400;
-      font-size: 20px;
-      line-height: 19px;
-      color: #F3EED9;
-    }
+    margin-top: 200px;
+    font-family: "Fredoka One", cursive;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 19px;
+    color: #f3eed9;
+  }
 
   button {
     margin-top: 16px;
@@ -269,11 +272,11 @@ const ContainerQuant = styled.div`
   margin-top: 5px;
 
   ion-icon:first-child {
-    visibility: ${({ cartQuant }) => cartQuant <= 1 ? "hidden" : "visible"} 
+    visibility: ${({ cartQuant }) => (cartQuant <= 1 ? "hidden" : "visible")};
   }
 
   ion-icon {
-    pointer-events: ${(props) => props.cartStatus ? "none" : "auto"};
+    pointer-events: ${(props) => (props.cartStatus ? "none" : "auto")};
     position: relative;
     margin-left: 15px;
   }

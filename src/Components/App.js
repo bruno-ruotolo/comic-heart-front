@@ -5,9 +5,10 @@ import SignIn from "./SignIn/SignIn";
 import Main from "./Main/Main";
 import UserProvider from "../Context/UserContext ";
 import Product from "./Product";
+import Cart from "./Cart";
+import Checkout from "./Checkout";
 
 import GlobalStyles from "../GlobalStyles";
-import Cart from "./Cart";
 
 export default function App() {
   return (
@@ -20,6 +21,7 @@ export default function App() {
           <Route path="/main" element={<Main />} />
           <Route path="/product/:id" element={<Product />} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/checkout" element={<Checkout />} />
         </Routes>
       </BrowserRouter>
     </UserProvider>
