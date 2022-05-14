@@ -7,6 +7,7 @@ import UserProvider from "../Context/UserContext ";
 import Product from "./Product";
 import Cart from "./Cart";
 import Checkout from "./Checkout";
+import Address from "./Address";
 
 import GlobalStyles from "../GlobalStyles";
 
@@ -21,6 +22,7 @@ export default function App() {
           <Route path="/main" element={<Main />} />
           <Route path="/product/:id" element={<Product />} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/address" element={<Address />} />
           <Route path="/checkout" element={<Checkout />} />
         </Routes>
       </BrowserRouter>

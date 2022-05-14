@@ -53,7 +53,7 @@ export default function Cart() {
   }, [userInfos.token, navigate, change]);
 
   function handleButton() {
-    navigate("/checkout", { state: { totalValue: total } });
+    navigate("/address", { state: { totalValue: total } });
   }
 
   async function deleteProduct(productId) {
