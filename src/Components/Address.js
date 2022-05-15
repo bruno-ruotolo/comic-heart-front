@@ -279,6 +279,9 @@ const AddressSection = styled.section`
   flex-direction:column;
   align-items:center;
   justify-content:space-between;
+  @media(min-width:800px){
+    width:100vw;
+  }
 
   p {
     font-style: normal;
@@ -303,7 +306,12 @@ const AddressHeader = styled.header`
     font-size: 35px;
     color: #F3EED9;
     text-shadow: inset 0px 5px 4px rgba(78, 0, 0, 0.25);
+    cursor:pointer;
 
+    @media(min-width:800px){
+      top: 26px;
+      left: 40px;
+    }
   }
 
   h2 {
@@ -325,6 +333,10 @@ const AddressInputs = styled.div`
   max-width: 303px;
   width: 100%;
 
+  @media(min-width:800px){
+    max-width: 503px;
+  }
+
   
   form {
     display:flex;
@@ -343,6 +355,10 @@ const AddressInputs = styled.div`
       font-size: 16px;
       line-height: 95%;
     }
+
+    @media(min-width:800px){
+      width: 503px;
+    }
   }
 
 
@@ -353,6 +369,9 @@ const AddressInputs = styled.div`
     height: 47px;
     margin-top:20px;
     margin-bottom: 35px;
+    @media(min-width:800px){
+      position: relative;
+    }
   }
 `
 
@@ -362,12 +381,22 @@ const AddressCity = styled.div`
   align-items:center;
   justify-content:space-between;
 
+  @media(min-width:800px){
+    width: 100%;
+  }
+
   input:first-child {
     width:216px;
+    @media(min-width:800px){
+      width: 356px;
+    }
   }
 
   input:last-child {
     width:79px;
+    @media(min-width:800px){
+      width: 120px;
+    }
   }
 `
 
@@ -380,10 +409,16 @@ const AddressHouse = styled.div`
   input:first-child {
     width:89px;
     padding-left: 15px;
+    @media(min-width:800px){
+      width: 140px;
+    }
   }
 
   input:last-child {
     width:208px;
+    @media(min-width:800px){
+      width: 335px;
+    }
   } 
 `
 

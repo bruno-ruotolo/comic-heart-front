@@ -101,6 +101,7 @@ body {
     line-height: 29px;
     color: #F3EED9;
     box-shadow: inset 0px 0px 2px #4e0000;
+    cursor: pointer;
   }
 
 }

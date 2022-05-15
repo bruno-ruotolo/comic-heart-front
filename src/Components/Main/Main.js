@@ -101,7 +101,7 @@ const ProductsList = styled.main`
     align-items:center;
     height: calc(100vh - 90px);
     width: 100vw;
-    max-width: 1000px;
+    max-width: 1465px;
     margin-top: 87px;
 
     h3 {
@@ -112,4 +112,13 @@ const ProductsList = styled.main`
       line-height: 19px;
       color: #F3EED9;
     }
-    `
+
+  @media(min-width:800px){
+    padding: 0 15px;
+    height: fit-content;
+    flex-direction:row;
+    align-items:center;
+    justify-content:space-between;
+    flex-wrap:wrap;
+  }
+`

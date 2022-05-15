@@ -122,34 +122,36 @@ export default function Cart() {
         <button onClick={() => handleButton()}>
           Fechar compra ({totalItems} Itens)
         </button>
-        {cart?.map((cart) => {
-          return (
-            <ContainerCart key={cart._id}>
-              <img src={cart.image} alt=""></img>
-              <article>
-                <h2>{cart.name}</h2>
-                <h3>R$ {cart.value.toString().replace(".", ",")}</h3>
-                <ContainerQuant cartStatus={cartStatus} cartQuant={cart.quant}>
-                  <ion-icon
-                    name="remove-circle"
-                    onClick={() => handleQuant(cart._id, false)}
-                  ></ion-icon>
-                  <p>{cart.quant}</p>
-                  <ion-icon
-                    name="add-circle"
-                    onClick={() => handleQuant(cart._id, true)}
-                  ></ion-icon>
-                </ContainerQuant>
-              </article>
-              <ion-icon
-                name="trash-bin"
-                onClick={() => {
-                  deleteProduct(cart._id);
-                }}
-              ></ion-icon>
-            </ContainerCart>
-          );
-        })}
+        <Carts>
+          {cart?.map((cart) => {
+            return (
+              <ContainerCart key={cart._id}>
+                <img src={cart.image} alt=""></img>
+                <article>
+                  <h2>{cart.name}</h2>
+                  <h3>R$ {cart.value.toString().replace(".", ",")}</h3>
+                  <ContainerQuant cartStatus={cartStatus} cartQuant={cart.quant}>
+                    <ion-icon
+                      name="remove-circle"
+                      onClick={() => handleQuant(cart._id, false)}
+                    ></ion-icon>
+                    <p>{cart.quant}</p>
+                    <ion-icon
+                      name="add-circle"
+                      onClick={() => handleQuant(cart._id, true)}
+                    ></ion-icon>
+                  </ContainerQuant>
+                </article>
+                <ion-icon
+                  name="trash-bin"
+                  onClick={() => {
+                    deleteProduct(cart._id);
+                  }}
+                ></ion-icon>
+              </ContainerCart>
+            );
+          })}
+        </Carts>
         <footer>
           <p>Subtotal</p>
           <p>R$ {total.toString().replace(".", ",")}</p>
@@ -164,11 +166,22 @@ export default function Cart() {
   );
 }
 
+const Carts = styled.div`
+  @media(min-width:800px){
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-wrap:wrap;
+    max-width: 1000px;
+  }
+`
+
 const CartSection = styled.section`
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-top: 90px;
+  margin-bottom: 61px;
 
   h4 {
     margin-top: 200px;
@@ -216,6 +229,11 @@ const ContainerCart = styled.div`
   margin-top: 13px;
   position: relative;
 
+  @media(min-width:800px){
+    margin-right:15px;
+  }
+  
+
   p {
     font-family: "Fredoka One";
     font-style: normal;
@@ -261,6 +279,7 @@ const ContainerCart = styled.div`
     bottom: 0;
     right: 7px;
     visibility: visible;
+    cursor:pointer;
   }
 `;
 

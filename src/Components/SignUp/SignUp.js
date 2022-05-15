@@ -133,6 +133,9 @@ const SignUpSection = styled.section`
   align-items:center;
   justify-content:center;
   width: 100%;
+  @media(min-width: 800px){
+      margin-top: 100px;
+    }
 
   img {
     margin-top: 10px;
@@ -143,6 +146,9 @@ const SignUpSection = styled.section`
     width: 283px;
     height: 47px;
     margin-bottom: 27px;
+    @media(min-width: 800px){
+      width: 383px;
+    }
   }
 
   button {
@@ -159,5 +165,6 @@ const SignUpSection = styled.section`
     font-size: 20px;
     line-height: 24px;
     color: #F3EED9;
+    cursor:pointer;
   }
 `

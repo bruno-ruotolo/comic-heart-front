@@ -26,6 +26,7 @@ const ProductSection = styled.section`
   margin-bottom: 15px;
   width: 350px;
   height: 177px;
+  cursor: pointer;
 
   img {
     width: 109px;
