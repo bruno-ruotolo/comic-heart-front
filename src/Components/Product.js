@@ -106,6 +106,7 @@ const ProductSection = styled.section`
   justify-content: center;
   align-items: center;
   margin-top: 70px;
+
   h1 {
     font-weight: 700;
     font-size: 28px;
@@ -116,11 +117,18 @@ const ProductSection = styled.section`
     margin-top: 23px;
     margin-bottom: 14px;
   }
+
   img {
     width: 184px;
     height: 265px;
     border-radius: 5px;
+
+    @media(min-width: 800px){
+      width: 264px;
+      height: 365px;
+    }
   }
+
   h2 {
     font-weight: 700;
     font-size: 40px;
@@ -131,14 +139,38 @@ const ProductSection = styled.section`
     margin-top: 14px;
     margin-bottom: 18px;
   }
+
   div {
     width: 90%;
     text-align: justify;
     max-width: 500px;
     max-height: 95px;
-    overflow: scroll;
-    //Bruno: Adicionei umas propriedades para a descrição ficar alinhada
+    overflow: auto;
+    padding: 5px;
+
+    @media(min-width: 800px){
+      max-height: 500px;
+      max-width: 1120px;
+      overflow:visible;
+    }
+
+    &::-webkit-scrollbar{
+      width:10px;
+    }
+    &::-webkit-scrollbar-track {
+      box-shadow: inset 0 0 5px grey; 
+      border-radius: 10px;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: #f3eed9; 
+      border-radius: 10px;
+    }
+    &::-webkit-scrollbar-thumb:hover {
+      background: #daca8b; 
+    }
   }
+
+  
   p {
     font-weight: 400;
     font-size: 16px;
@@ -146,13 +178,12 @@ const ProductSection = styled.section`
     display: flex;
     align-items: center;
     margin-bottom: 15px;
-    //Bruno: Percebi no layout q fiz q o botão tava muito longe da descrição no mobile, diminui um pouco
   }
+
   button {
     width: 337px;
     height: 47px;
     margin-top: 20px;
     margin-bottom: 15px;
-    //Bruno: Removi algumas propriedas porque coloquei como global para todos os botões.
   }
 `;

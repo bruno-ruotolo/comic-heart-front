@@ -114,7 +114,12 @@ const SignInSection = styled.section`
     width: 283px;
     height: 47px;
     margin-bottom: 24px;
+
+    @media(min-width: 800px){
+      width: 383px;
+    }
   }
+
 
   button {
     width: 283px;
@@ -130,6 +135,7 @@ const SignInSection = styled.section`
     font-size: 20px;
     line-height: 24px;
     color: #F3EED9;
+    cursor: pointer;
   }
 
 `

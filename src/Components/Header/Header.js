@@ -7,6 +7,7 @@ import Swal from "sweetalert2"
 import { UserContext } from "../../Context/UserContext "
 
 import LogoHQ from "./LogoSemTexto.png"
+import LogoDesktop from "./LogoDesktopHeader.png"
 
 export default function Header({ change }) {
   const navigate = useNavigate();
@@ -70,12 +71,17 @@ export default function Header({ change }) {
       <HeaderSection>
         <TopHeader>
           <img src={LogoHQ} alt="Logo" onClick={() => navigate("/main")} />
+          <img src={LogoDesktop} alt="Logo" onClick={() => navigate("/main")} />
           <HeaderInput>
             <form onSubmit={handleSubmit}>
               <input type="text" onChange={(e) => handleInput(e)} />
               <ion-icon onClick={handleSubmit} type="buttom" name="search"></ion-icon>
             </form>
           </HeaderInput>
+          <DesktopUser>
+            <ion-icon name="person"></ion-icon>
+            <p>{userInfos.name}</p>
+          </DesktopUser>
           <Cart onClick={() => navigate("/cart")}>
             <ion-icon name="cart"></ion-icon>
             <CartQuantity cart={cart}>
@@ -90,6 +96,9 @@ export default function Header({ change }) {
           </UserIcon>
           <ion-icon onClick={handleLogout} name="log-out"></ion-icon>
         </BottomHeader>
+        <DesktopLogout>
+          <ion-icon onClick={handleLogout} className="logoutDesktop" name="log-out"></ion-icon>
+        </DesktopLogout>
       </HeaderSection>
     </HeaderStyle >
   )
@@ -107,6 +116,7 @@ const HeaderStyle = styled.header`
   height: 70px;
   background-color: #F3EED9;
   box-shadow: 0px 12px 7px rgba(0, 0, 0, 0.25);
+  z-index:3;
 
   ion-icon{ 
     color:#4E0000;
@@ -122,6 +132,12 @@ const HeaderSection = styled.section`
   justify-content:center;
   width: 100%;
   max-width: 1720px;
+
+  @media(min-width: 800px){
+    flex-direction:row;
+    padding-left:15px;
+    padding-right:15px;
+  }
 `
 const TopHeader = styled.div`
   display:flex;
@@ -129,22 +145,45 @@ const TopHeader = styled.div`
   justify-content:space-between;
   width: 100%;
   margin-top: 5px;
+  cursor:pointer;
+
+  @media(min-width: 800px){
+    margin-top:-10px;
+  }
 
   ion-icon {
     font-size: 45px;
+  }
+
+  img:last-of-type{
+    display:none;
+  }
+
+  @media(min-width: 800px){
+    img:first-child {
+      display:none;
+    }
+
+    img:last-of-type {
+      display:block;
+      width:150px;
+    }
   }
 `
 
 const HeaderInput = styled.div`
   position: relative;
+  width:100%;
+  padding: 0 10px;
+  max-width: 920px;
 
   input {
-    width: 255px; 
     height: 38px;
     background-color: #4E0000;
     color:#F3EED9;
     padding-left: 45px;
     font-size: 17px;
+    width:100%;
   }
   
   ion-icon {
@@ -153,7 +192,8 @@ const HeaderInput = styled.div`
     left:0;
     color: #F3EED9;
     font-size: 33px;
-    margin: 4px 4px;
+    margin: 4px 14px;
+    cursor:pointer;
   }
 
   button {
@@ -161,10 +201,29 @@ const HeaderInput = styled.div`
     color:transparent;
     background-color:transparent;
   }
+
+  @media(min-width:1420px){
+    margin-right: -75px;
+   }
+
+  @media(min-width:1620px){
+    margin-right: -165px;
+  }
+
+  @media(min-width:800px){
+    margin-top:10px;
+  }
 `
 
 const Cart = styled.div`
   position: relative;
+
+  @media(min-width: 800px){
+   ion-icon {
+     margin-top: 8px;
+     cursor:pointer;
+   }
+  }
 `
 
 const CartQuantity = styled.div`
@@ -200,6 +259,10 @@ const BottomHeader = styled.div`
     font-size: 30px;
     margin-left: 15px;
   }
+
+  @media(min-width: 800px){
+    display:none;
+  }
 `
 const UserIcon = styled.div`
   display:flex;
@@ -219,4 +282,42 @@ const UserIcon = styled.div`
     color: #4E0000;
   }
 `
+const DesktopLogout = styled.div`
+  @media(max-width: 800px){
+      display: none;
+    }
 
+  ion-icon {
+    font-size: 50px;
+    margin-left: 30px;
+    cursor:pointer;
+  }
+`
+
+const DesktopUser = styled.div`
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin-right: 30px;
+  margin-left:30px;
+
+  @media(max-width: 800px){
+    display: none;
+  }
+
+  ion-icon {
+    left:0;
+    font-size: 35px;
+    margin-top:10px;
+  }
+
+  p {
+    font-family: 'Fredoka One', cursive;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 17px;
+    color: #4E0000;
+    margin-top: 10px;
+  }
+`
