@@ -14,7 +14,6 @@ export default function Checkout() {
   const [dadosUser, setDadosUser] = useState({});
   const [cpf, setCpf] = useState("");
   const [payment, setPayment] = useState();
-  console.log(payment);
 
   useEffect(() => {
     const config = {
@@ -90,7 +89,7 @@ export default function Checkout() {
   return (
     <CheckoutSection>
       <ion-icon
-        onClick={() => navigate("/adress")}
+        onClick={() => navigate("/address")}
         name="caret-back"
       ></ion-icon>
       <h1>Selecione a forma de pagamento</h1>
