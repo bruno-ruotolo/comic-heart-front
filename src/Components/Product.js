@@ -4,14 +4,18 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
 import Swal from "sweetalert2";
+import { Bars } from "react-loader-spinner";
 
 import { UserContext } from "../Context/UserContext ";
 import Header from "./Header/Header";
 
 export default function Product() {
-  const [product, setProduct] = useState({});
-  const { id } = useParams();
   const navigate = useNavigate();
+
+  const [product, setProduct] = useState({});
+  const [productState, setProductState] = useState(false);
+
+  const { id } = useParams();
   const { userInfos } = useContext(UserContext);
 
   useEffect(() => {
@@ -20,7 +24,7 @@ export default function Product() {
         Authorization: `Bearer ${userInfos.token}`,
       },
     };
-    const URL = "http://localhost:5000";
+    const URL = "https://projeto14-comic-heart.herokuapp.com";
     async function getProduct() {
       try {
         const promise = await axios.get(`${URL}/product/${id}`, config);
@@ -43,7 +47,8 @@ export default function Product() {
   }, [id, userInfos.token, navigate]);
 
   async function handleButton() {
-    const URL = "http://localhost:5000";
+    setProductState(true);
+    const URL = "https://projeto14-comic-heart.herokuapp.com";
     const config = {
       headers: {
         Authorization: `Bearer ${userInfos.token}`,
@@ -59,6 +64,7 @@ export default function Product() {
         confirmButtonColor: "#4E0000",
         color: "#4E0000",
       });
+      setProductState(false);
       navigate("/");
     } catch (e) {
       console.log("Houve um problema ao adicionar o item ao carrinho" + e);
@@ -71,17 +77,19 @@ export default function Product() {
         confirmButtonColor: "#4E0000",
         color: "#4E0000",
       });
+      setProductState(false);
     }
   }
+  console.log(Object.keys(product).length)
 
-  return (
+  return !(Object.keys(product).length === 0) ?
     <>
       <Header />
       <ProductSection>
         <h1>{product[0]?.name}</h1>
         <img src={product[0]?.image} alt=""></img>
         <h2>R$ {product[0]?.value?.toString().replace(".", ",")}</h2>
-        <div>
+        <div className="product">
           <p>{product[0]?.description}</p>
         </div>
 
@@ -89,12 +97,14 @@ export default function Product() {
           onClick={() => {
             handleButton();
           }}
+          disabled={productState}
         >
-          Adicionar ao Carrinho
+          {!productState ? "Adicionar ao Carrinho" : <Bars width={50} color="#F3EED9" />}
         </button>
       </ProductSection>
     </>
-  );
+    :
+    <Bars height={500} width={100} color="#F3EED9" />
 }
 
 const ProductSection = styled.section`
@@ -140,7 +150,7 @@ const ProductSection = styled.section`
     margin-bottom: 18px;
   }
 
-  div {
+  .product {
     width: 90%;
     text-align: justify;
     max-width: 500px;
@@ -185,5 +195,8 @@ const ProductSection = styled.section`
     height: 47px;
     margin-top: 20px;
     margin-bottom: 15px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
   }
 `;

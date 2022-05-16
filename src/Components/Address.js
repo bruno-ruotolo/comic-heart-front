@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Swal from "sweetalert2";
 import styled from "styled-components";
+import { Bars } from "react-loader-spinner";
 
 import { UserContext } from "../Context/UserContext ";
 
@@ -31,7 +32,7 @@ export default function Address() {
         Authorization: `Bearer ${userInfos.token}`,
       },
     };
-    const URL = "http://localhost:5000";
+    const URL = "https://projeto14-comic-heart.herokuapp.com";
 
     const promise = axios.get(`${URL}/address`, config);
     promise.then(({ data }) => {
@@ -82,7 +83,7 @@ export default function Address() {
         Authorization: `Bearer ${userInfos.token}`,
       },
     };
-    const URL = "http://localhost:5000";
+    const URL = "https://projeto14-comic-heart.herokuapp.com";
 
     const promise = axios.post(`${URL}/address`, address, config)
     promise.then(response => {
@@ -131,7 +132,7 @@ export default function Address() {
         Authorization: `Bearer ${userInfos.token}`,
       },
     };
-    const URL = "http://localhost:5000";
+    const URL = "https://projeto14-comic-heart.herokuapp.com";
     const promise = axios.delete(`${URL}/address`, config)
     promise.then(response => { setAddress(clearedAddres); setHideClear(false) });
     promise.catch(e => {
@@ -174,6 +175,7 @@ export default function Address() {
     promise.catch(e => console.log(e));
   }
 
+  console.log(addressState)
   return (
     <AddressSection>
       <AddressHeader>
@@ -188,6 +190,7 @@ export default function Address() {
             type="tel"
             maxLength="9"
             placeholder="CEP*"
+            pattern="^(\d{5})-(\d{3})"
             onBlur={viaCep}
             value={address.cep || ""}
             onChange={(e) => handleInput(e, "cep")}
@@ -263,8 +266,8 @@ export default function Address() {
           <ClearAddress hideClear={hideClear} onClick={clearData}>
             <span>Novo Endereço</span>
           </ClearAddress>
-          <button>
-            Ir para o Pagamento
+          <button disabled={hideClear ? !addressState : addressState}>
+            {!addressState || hideClear ? "Ir para o Pagamento" : <Bars width={50} color="#F3EED9" />}
           </button>
         </form>
       </AddressInputs>
@@ -346,6 +349,14 @@ const AddressInputs = styled.div`
     width: 303px;
     height:40px;
     margin-bottom: 20px;
+
+    &:focus{
+      outline-color: #080;
+    }
+
+    &:focus:invalid{
+      outline-color:#FF0000;
+    }
 
     &::placeholder{
       font-style: normal;
@@ -429,6 +440,7 @@ const ClearAddress = styled.div`
   background-color: #F3EED9;
   box-shadow: inset 0px 0px 2px #4E0000;
   border-radius: 8px;
+  cursor: pointer;
 
   span {
     font-family: 'Fredoka One', cursive;

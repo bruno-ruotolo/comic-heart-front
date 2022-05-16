@@ -2,6 +2,7 @@ import { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
+import { Bars } from "react-loader-spinner";
 import Swal from "sweetalert2";
 
 import { UserContext } from "../Context/UserContext ";
@@ -15,8 +16,7 @@ export default function Checkout() {
   const [cpf, setCpf] = useState("");
   const [payment, setPayment] = useState();
   const [total, setTotal] = useState(0);
-
-  // const localValue = localStorage.getItem("value");
+  const [checkoutState, setCheckoutState] = useState(false);
 
   useEffect(() => {
     const config = {
@@ -24,7 +24,7 @@ export default function Checkout() {
         Authorization: `Bearer ${userInfos.token}`,
       },
     };
-    const URL = "http://localhost:5000";
+    const URL = "https://projeto14-comic-heart.herokuapp.com";
     async function getCheckout() {
       try {
         const info = await axios.get(`${URL}/checkout`, config);
@@ -57,6 +57,7 @@ export default function Checkout() {
 
   async function handleSubmit(e) {
     e.preventDefault();
+    setCheckoutState(true);
     if (payment === "cartao" || payment?.name === "cartao") payment.numCartao = payment.numCartao.replaceAll(" ", "")
     const objPost = { payment, cpf: cpf.replaceAll(".", "").replaceAll("-", ""), totalValue: total };
     try {
@@ -65,7 +66,7 @@ export default function Checkout() {
           Authorization: `Bearer ${userInfos.token}`,
         },
       };
-      const URL = "http://localhost:5000";
+      const URL = "https://projeto14-comic-heart.herokuapp.com";
       await axios.post(`${URL}/checkout`, objPost, config);
       Swal.fire({
         icon: "success",
@@ -75,6 +76,7 @@ export default function Checkout() {
         confirmButtonColor: "#4E0000",
         color: "#4E0000",
       });
+      setCheckoutState(false);
       navigate("/main");
     } catch (e) {
       console.log("Houve problema no post do checkout" + e);
@@ -87,6 +89,7 @@ export default function Checkout() {
         confirmButtonColor: "#4E0000",
         color: "#4E0000",
       });
+      setCheckoutState(false);
       navigate("/");
     }
   }
@@ -99,7 +102,7 @@ export default function Checkout() {
     }
   }
 
-  return (
+  return !(Object.keys(dadosUser).length === 0) ? (
     <CheckoutSection>
       <ion-icon
         onClick={() => navigate("/address")}
@@ -115,6 +118,7 @@ export default function Checkout() {
               value="boleto"
               checked={payment === "boleto"}
               onChange={onValueChange}
+              disabled={checkoutState}
             />
             <div>
               <label>Boleto</label>
@@ -128,6 +132,7 @@ export default function Checkout() {
               value="pix"
               checked={payment === "pix"}
               onChange={onValueChange}
+              disabled={checkoutState}
             />
             <div>
               <label>Pix</label>
@@ -142,6 +147,7 @@ export default function Checkout() {
               required
               checked={payment?.name === "cartao"}
               onChange={onValueChange}
+              disabled={checkoutState}
             />
             <label>Cartão de Crédito</label>
           </ContainerRadio>
@@ -151,8 +157,11 @@ export default function Checkout() {
                 type="text"
                 placeholder="Número do Cartão"
                 value={payment.numCartao || ""}
-                required
+                pattern=".{19}"
                 maxLength="19"
+                title="Cartão Inválido"
+                required
+                disabled={checkoutState}
                 onChange={(e) => {
                   e.target.value = e.target.value
                     .replace(/\D/g, "")
@@ -170,8 +179,11 @@ export default function Checkout() {
                 <Vencimento
                   type="text"
                   placeholder="Vencimento"
+                  title="Data Inválida"
                   required
+                  pattern="(\d{2})/(\d{2})"
                   maxLength="5"
+                  disabled={checkoutState}
                   value={payment.vencimento || ""}
                   onChange={(e) => {
                     e.target.value = e.target.value
@@ -188,6 +200,9 @@ export default function Checkout() {
                   type="text"
                   placeholder="CVV"
                   maxLength="3"
+                  pattern="\d{3}"
+                  title="CVV Inválido"
+                  disabled={checkoutState}
                   required
                   value={payment.cvv || ""}
                   onChange={(e) =>
@@ -214,7 +229,10 @@ export default function Checkout() {
             type="text"
             placeholder="CPF"
             maxLength="14"
+            pattern="(\d{3})\.(\d{3})\.(\d{3})-(\d{2})"
             value={cpf}
+            title="CPF Inválido"
+            disabled={checkoutState}
             onChange={(e) => {
               e.target.value = e.target.value
                 .replace(/\D/g, "")
@@ -226,10 +244,15 @@ export default function Checkout() {
             required
           ></InputCpf>
         </Inputs>
-        <Submit type="submit">Confirmar (R$ {total.toString().replace(".", ",")})</Submit>
+        <Submit disabled={checkoutState} type="submit">
+          {!checkoutState ? `Confirmar (R$ ${total.toString().replace(".", ",")})` : <Bars width={50} color="#F3EED9" />}
+        </Submit>
       </form>
     </CheckoutSection>
-  );
+  )
+    : <CheckoutSection>
+      <Bars height={500} width={100} color="#F3EED9" />
+    </CheckoutSection>;
 }
 
 const CheckoutSection = styled.section`
@@ -322,6 +345,14 @@ const ContainerRadio = styled.div`
 `;
 
 const NumCartao = styled.input`
+  &:focus{
+        outline-color: #080;
+      }
+
+  &:focus:invalid{
+    outline-color:#FF0000;
+  }
+
   margin-top:-37px;
   width: 261px;
   height: 40px;
@@ -340,6 +371,14 @@ const DivFlex = styled.div`
 `;
 
 const Vencimento = styled.input`
+  &:focus{
+        outline-color: #080;
+      }
+
+  &:focus:invalid{
+    outline-color:#FF0000;
+  }
+
   width: 152px;
   height: 40px;
   margin-right: 15px;
@@ -351,6 +390,14 @@ const Vencimento = styled.input`
 `;
 
 const CVV = styled.input`
+  &:focus{
+    outline-color: #080;
+  }
+
+  &:focus:invalid{
+    outline-color:#FF0000;
+  }
+  
   width: 94px;
   height: 40px;
   @media(min-width:800px){
@@ -383,6 +430,14 @@ const InputCpf = styled.input`
   border-radius: 8px;
   width: 261px;
   height: 40px;
+
+  &:focus{
+      outline-color: #080;
+    }
+
+  &:focus:invalid{
+    outline-color:#FF0000;
+  }
 
   @media(min-width:800px){
     width: 370px;

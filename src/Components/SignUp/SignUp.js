@@ -21,7 +21,7 @@ export default function SignUp() {
   function handleSubmit(e) {
     e.preventDefault();
     setSignUpStatus(true);
-    const URL = "http://localhost:5000"
+    const URL = "https://projeto14-comic-heart.herokuapp.com"
     const promise = axios.post(`${URL}/sign-up`, userSignUp);
     promise.then((response) => {
       Swal.fire({
