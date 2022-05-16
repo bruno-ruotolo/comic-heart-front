@@ -48,7 +48,7 @@ export default function SignIn() {
     promise.catch((e) => {
       Swal.fire({
         icon: 'error',
-        title: "Ops! Algo deu errado",
+        title: "Senha/Email Inválido",
         text: 'Verifique seus dados e tente novamente',
         width: 326,
         background: "#F3EED9",

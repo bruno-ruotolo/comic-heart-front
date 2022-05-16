@@ -221,6 +221,13 @@ const CartSection = styled.section`
     padding: 0 15px;
     color: #4e0000;
     margin-top: 15px;
+
+    @media(min-width:800px){
+      justify-content: center;
+      p:first-child{
+        margin-right: 200px;
+      }
+    }
   }
 `;
 

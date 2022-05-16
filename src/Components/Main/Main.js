@@ -90,9 +90,7 @@ export default function Main() {
       <h3>Nenhum Produto Encontrado</h3>
     </ProductsList>
   ) :
-    <ProductsList>
-      <Bars height={500} width={100} color="#F3EED9" />
-    </ProductsList >
+    <Bars height={500} width={100} color="#F3EED9" />
 }
 
 const ProductsList = styled.main`
@@ -114,7 +112,7 @@ const ProductsList = styled.main`
     }
 
   @media(min-width:800px){
-    width:100%;
+    width:100vw;
     padding: 0 15px;
     height: fit-content;
     flex-direction:row;
