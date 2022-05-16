@@ -1,5 +1,5 @@
 import { useEffect, useState, useContext } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
 import Swal from "sweetalert2";
@@ -7,13 +7,16 @@ import Swal from "sweetalert2";
 import { UserContext } from "../Context/UserContext ";
 
 export default function Checkout() {
-  const { userInfos } = useContext(UserContext);
   const navigate = useNavigate();
-  const location = useLocation();
-  const { totalValue } = location.state;
+
+  const { userInfos } = useContext(UserContext);
+
   const [dadosUser, setDadosUser] = useState({});
   const [cpf, setCpf] = useState("");
   const [payment, setPayment] = useState();
+  const [total, setTotal] = useState(0);
+
+  // const localValue = localStorage.getItem("value");
 
   useEffect(() => {
     const config = {
@@ -26,6 +29,14 @@ export default function Checkout() {
       try {
         const info = await axios.get(`${URL}/checkout`, config);
         setDadosUser(info.data);
+
+        const cart = await axios.get(`${URL}/cart`, config);
+        let somatorio = 0;
+        cart.data.forEach((cart) => {
+          somatorio += cart.value * cart.quant;
+        });
+        if (somatorio === 0) navigate("/main");
+        setTotal(somatorio.toFixed(2));
       } catch (e) {
         console.log("Houve problema na requisição do checkout" + e);
         Swal.fire({
@@ -43,9 +54,11 @@ export default function Checkout() {
     getCheckout();
   }, [navigate, userInfos.token]);
 
+
   async function handleSubmit(e) {
     e.preventDefault();
-    const objPost = { payment, cpf, totalValue };
+    if (payment === "cartao" || payment?.name === "cartao") payment.numCartao = payment.numCartao.replaceAll(" ", "")
+    const objPost = { payment, cpf: cpf.replaceAll(".", "").replaceAll("-", ""), totalValue: total };
     try {
       const config = {
         headers: {
@@ -94,109 +107,126 @@ export default function Checkout() {
       ></ion-icon>
       <h1>Selecione a forma de pagamento</h1>
       <form onSubmit={(e) => handleSubmit(e)}>
-        <ContainerRadio>
-          <input
-            type="radio"
-            name="formaPagamento"
-            value="boleto"
-            checked={payment === "boleto"}
-            onChange={onValueChange}
-          />
-          <div>
-            <label>Boleto</label>
-            <p>Vencimento em 1 dia útil</p>
-          </div>
-        </ContainerRadio>
-        <ContainerRadio>
-          <input
-            type="radio"
-            name="formaPagamento"
-            value="pix"
-            checked={payment === "pix"}
-            onChange={onValueChange}
-          />
-          <div>
-            <label>Pix</label>
-            <p>Vencimento em 30 minutos</p>
-          </div>
-        </ContainerRadio>
-        <ContainerRadio>
-          <input
-            type="radio"
-            name="formaPagamento"
-            value="cartao"
-            required
-            checked={payment?.name === "cartao"}
-            onChange={onValueChange}
-          />
-          <label>Cartão de Crédito</label>
-        </ContainerRadio>
-        {payment === "cartao" || payment?.name === "cartao" ? (
-          <>
-            <NumCartao
-              type="text"
-              placeholder="Número do Cartão"
-              value={payment.numCartao}
-              required
-              maxLength="16"
-              onChange={(e) =>
-                setPayment({
-                  ...payment,
-                  name: "cartao",
-                  numCartao: e.target.value,
-                })
-              }
+        <Inputs>
+          <ContainerRadio>
+            <input
+              type="radio"
+              name="formaPagamento"
+              value="boleto"
+              checked={payment === "boleto"}
+              onChange={onValueChange}
             />
-            <DivFlex>
-              <Vencimento
+            <div>
+              <label>Boleto</label>
+              <p>Vencimento em 1 dia útil</p>
+            </div>
+          </ContainerRadio>
+          <ContainerRadio>
+            <input
+              type="radio"
+              name="formaPagamento"
+              value="pix"
+              checked={payment === "pix"}
+              onChange={onValueChange}
+            />
+            <div>
+              <label>Pix</label>
+              <p>Vencimento em 30 minutos</p>
+            </div>
+          </ContainerRadio>
+          <ContainerRadio>
+            <input
+              type="radio"
+              name="formaPagamento"
+              value="cartao"
+              required
+              checked={payment?.name === "cartao"}
+              onChange={onValueChange}
+            />
+            <label>Cartão de Crédito</label>
+          </ContainerRadio>
+          {payment === "cartao" || payment?.name === "cartao" ? (
+            <>
+              <NumCartao
                 type="text"
-                placeholder="Vencimento"
+                placeholder="Número do Cartão"
+                value={payment.numCartao || ""}
                 required
-                maxLength="5"
-                value={payment.vencimento}
-                onChange={(e) =>
+                maxLength="19"
+                onChange={(e) => {
+                  e.target.value = e.target.value
+                    .replace(/\D/g, "")
+                    .replace(/(\d{4})(\d)/, "$1 $2")
+                    .replace(/(\d{4})(\d)/, "$1 $2")
+                    .replace(/(\d{4})(\d)/, "$1 $2")
                   setPayment({
                     ...payment,
                     name: "cartao",
-                    vencimento: e.target.value,
+                    numCartao: e.target.value,
                   })
-                }
+                }}
               />
-              <CVV
-                type="text"
-                placeholder="CVV"
-                maxLength="3"
-                required
-                value={payment.cvv}
-                onChange={(e) =>
-                  setPayment({
-                    ...payment,
-                    name: "cartao",
-                    cvv: e.target.value,
-                  })
-                }
-              />
-            </DivFlex>
-          </>
-        ) : (
-          <></>
-        )}
-        <ClienteEmail>
-          <span>Cliente:</span> {dadosUser?.name}
-        </ClienteEmail>
-        <ClienteEmail>
-          <span>E-mail:</span> {dadosUser?.email}
-        </ClienteEmail>
-        <CPF>Digite seu CPF:</CPF>
-        <InputCpf
-          type="text"
-          placeholder="CPF"
-          maxLength="11"
-          value={cpf}
-          onChange={(e) => setCpf(e.target.value)}
-          required
-        ></InputCpf>
-        <Submit type="submit">Confirmar (R$ {totalValue})</Submit>
+              <DivFlex>
+                <Vencimento
+                  type="text"
+                  placeholder="Vencimento"
+                  required
+                  maxLength="5"
+                  value={payment.vencimento || ""}
+                  onChange={(e) => {
+                    e.target.value = e.target.value
+                      .replace(/\D/g, "")
+                      .replace(/(\d{2})(\d)/, "$1/$2")
+                    setPayment({
+                      ...payment,
+                      name: "cartao",
+                      vencimento: e.target.value,
+                    })
+                  }}
+                />
+                <CVV
+                  type="text"
+                  placeholder="CVV"
+                  maxLength="3"
+                  required
+                  value={payment.cvv || ""}
+                  onChange={(e) =>
+                    setPayment({
+                      ...payment,
+                      name: "cartao",
+                      cvv: e.target.value,
+                    })
+                  }
+                />
+              </DivFlex>
+            </>
+          ) : (
+            <></>
+          )}
+          <ClienteEmail>
+            <span>Cliente:</span> {dadosUser?.name}
+          </ClienteEmail>
+          <ClienteEmail>
+            <span>E-mail:</span> {dadosUser?.email}
+          </ClienteEmail>
+          <CPF>Digite seu CPF:</CPF>
+          <InputCpf
+            type="text"
+            placeholder="CPF"
+            maxLength="14"
+            value={cpf}
+            onChange={(e) => {
+              e.target.value = e.target.value
+                .replace(/\D/g, "")
+                .replace(/(\d{3})(\d)/, "$1.$2")
+                .replace(/(\d{3})(\d)/, "$1.$2")
+                .replace(/(\d{3})(\d)/, "$1-$2")
+              setCpf(e.target.value)
+            }}
+            required
+          ></InputCpf>
+        </Inputs>
+        <Submit type="submit">Confirmar (R$ {total.toString().replace(".", ",")})</Submit>
       </form>
     </CheckoutSection>
   );
@@ -212,6 +242,11 @@ const CheckoutSection = styled.section`
     position: absolute;
     left: 0;
     top: 0;
+    cursor: pointer;
+    @media(min-width:800px){
+      top: 30px;
+      left: 30px;
+    }
   }
 
   h1 {
@@ -228,28 +263,55 @@ const CheckoutSection = styled.section`
   form {
     display: flex;
     font-family: "Lexend Deca";
+    align-items:center;
+    margin-top: 20px;
     font-style: normal;
     width: 100%;
   }
 
   span {
     font-weight: 700;
+    @media(min-width:800px){
+      font-size: 20px;
+    }
   }
 `;
 
+const Inputs = styled.div`
+
+`
+
 const ContainerRadio = styled.div`
   display: flex;
-  margin-bottom: 46px;
+  margin-bottom: 35px;
   text-align: left;
+
+  @media(min-width:800px){
+    margin-bottom: 55px;
+  }
+
+  label:last-child{
+    margin-top:5px;
+  }
 
   input {
     accent-color: #ec665c;
+    width:30px;
+    height: 17px;
+    cursor: pointer;
+
+    @media(min-width:800px){
+      height: 22px;
+    }
   }
 
   label {
     font-weight: 700;
     font-size: 16px;
     line-height: 95%;
+    @media(min-width:800px){
+      font-size: 22px;
+    }
   }
 
   p {
@@ -260,13 +322,21 @@ const ContainerRadio = styled.div`
 `;
 
 const NumCartao = styled.input`
+  margin-top:-37px;
   width: 261px;
   height: 40px;
   margin-bottom: 7px;
+
+  @media(min-width:800px){
+    width: 370px;
+  }
 `;
 
 const DivFlex = styled.div`
   display: flex;
+  @media(min-width:800px){
+    justify-content:space-between;
+  }
 `;
 
 const Vencimento = styled.input`
@@ -274,11 +344,18 @@ const Vencimento = styled.input`
   height: 40px;
   margin-right: 15px;
   margin-bottom: 36px;
+
+  @media(min-width:800px){
+    width: 200px;
+  }
 `;
 
 const CVV = styled.input`
   width: 94px;
   height: 40px;
+  @media(min-width:800px){
+    width: 100px;
+  }
 `;
 
 const ClienteEmail = styled.p`
@@ -291,6 +368,12 @@ const CPF = styled.p`
   font-size: 16px;
   line-height: 95%;
   margin-bottom: 10px;
+  margin-top: 30px;
+
+  @media(min-width:800px){
+    margin-top: 70px;
+    font-size: 23px;
+  }
 `;
 
 const InputCpf = styled.input`
@@ -300,6 +383,10 @@ const InputCpf = styled.input`
   border-radius: 8px;
   width: 261px;
   height: 40px;
+
+  @media(min-width:800px){
+    width: 370px;
+  }
 `;
 
 const Submit = styled.button`

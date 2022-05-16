@@ -4,12 +4,15 @@ import axios from "axios";
 import styled from "styled-components";
 import Swal from "sweetalert2";
 
-import { UserContext } from "../Context/UserContext ";
-import Header from "./Header/Header";
+import { UserContext } from "../../Context/UserContext ";
+import Header from "../Header/Header";
+
 
 export default function Cart() {
-  const { userInfos } = useContext(UserContext);
   const navigate = useNavigate();
+
+  const { userInfos } = useContext(UserContext);
+
   const [cart, setCart] = useState([]);
   const [total, setTotal] = useState(0);
   const [totalItems, setTotalItems] = useState(0);
@@ -50,9 +53,10 @@ export default function Cart() {
       }
     }
     getCart();
-  }, [userInfos.token, navigate, change]);
+  }, [userInfos, navigate, change]);
 
   function handleButton() {
+    localStorage.setItem("value", total);
     navigate("/address", { state: { totalValue: total } });
   }
 
