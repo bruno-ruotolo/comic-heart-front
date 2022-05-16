@@ -5,7 +5,7 @@ import SignIn from "./SignIn/SignIn";
 import Main from "./Main/Main";
 import UserProvider from "../Context/UserContext ";
 import Product from "./Product";
-import Cart from "./Cart";
+import Cart from "./Cart/Cart";
 import Checkout from "./Checkout";
 import Address from "./Address";
 

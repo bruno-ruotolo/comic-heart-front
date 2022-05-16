@@ -149,6 +149,14 @@ const SignUpSection = styled.section`
     @media(min-width: 800px){
       width: 383px;
     }
+
+    &:focus{
+      outline-color: #080;
+    }
+
+    &:focus:invalid{
+      outline-color:#FF0000;
+    }
   }
 
   button {

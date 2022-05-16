@@ -1,5 +1,5 @@
 import { useState, useContext, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Swal from "sweetalert2";
 import styled from "styled-components";
@@ -7,8 +7,6 @@ import styled from "styled-components";
 import { UserContext } from "../Context/UserContext ";
 
 export default function Address() {
-  const location = useLocation();
-
   const navigate = useNavigate();
 
   const { userInfos } = useContext(UserContext);
@@ -66,6 +64,7 @@ export default function Address() {
   function handleInput(e, property) {
     if (property === "cep") {
       e.target.value = e.target.value
+        .replace(/\D/g, "")
         .replace(/^(\d{5})(\d{3})/, "$1-$2");
     }
 
@@ -87,8 +86,7 @@ export default function Address() {
 
     const promise = axios.post(`${URL}/address`, address, config)
     promise.then(response => {
-      const { totalValue } = location.state;
-      navigate("/checkout", { state: { totalValue } })
+      navigate("/checkout");
     });
     promise.catch((e) => {
       if (e.response.status === 401) {

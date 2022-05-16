@@ -92,7 +92,11 @@ export default function Header({ change }) {
         <BottomHeader>
           <UserIcon>
             <ion-icon name="person"></ion-icon>
-            <p>{userInfos.name}</p>
+            <p>{userInfos.name.length > 10
+              ? (
+                userInfos.name.split(" ")[0]
+              )
+              : userInfos.name.length}</p>
           </UserIcon>
           <ion-icon onClick={handleLogout} name="log-out"></ion-icon>
         </BottomHeader>
@@ -251,13 +255,16 @@ const CartQuantity = styled.div`
 const BottomHeader = styled.div`
   display:flex;
   align-items:center;
-  justify-content:space-around;
-  width:100%;
+  justify-content:space-between;
+  width:65%;
   margin-top: -8px;
 
   ion-icon {
     font-size: 30px;
-    margin-left: 15px;
+  }
+
+  ion-icon:last-child{
+    margin-right:0;
   }
 
   @media(min-width: 800px){

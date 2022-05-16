@@ -114,6 +114,7 @@ const ProductsList = styled.main`
     }
 
   @media(min-width:800px){
+    width:100%;
     padding: 0 15px;
     height: fit-content;
     flex-direction:row;
