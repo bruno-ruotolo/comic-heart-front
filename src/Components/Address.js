@@ -31,7 +31,7 @@ export default function Address() {
         Authorization: `Bearer ${userInfos.token}`,
       },
     };
-    const URL = "http://localhost:5000";
+    const URL = "https://projeto14-comic-heart.herokuapp.com";
 
     const promise = axios.get(`${URL}/address`, config);
     promise.then(({ data }) => {
@@ -82,7 +82,7 @@ export default function Address() {
         Authorization: `Bearer ${userInfos.token}`,
       },
     };
-    const URL = "http://localhost:5000";
+    const URL = "https://projeto14-comic-heart.herokuapp.com";
 
     const promise = axios.post(`${URL}/address`, address, config)
     promise.then(response => {
@@ -131,7 +131,7 @@ export default function Address() {
         Authorization: `Bearer ${userInfos.token}`,
       },
     };
-    const URL = "http://localhost:5000";
+    const URL = "https://projeto14-comic-heart.herokuapp.com";
     const promise = axios.delete(`${URL}/address`, config)
     promise.then(response => { setAddress(clearedAddres); setHideClear(false) });
     promise.catch(e => {

@@ -24,7 +24,7 @@ export default function Checkout() {
         Authorization: `Bearer ${userInfos.token}`,
       },
     };
-    const URL = "http://localhost:5000";
+    const URL = "https://projeto14-comic-heart.herokuapp.com";
     async function getCheckout() {
       try {
         const info = await axios.get(`${URL}/checkout`, config);
@@ -65,7 +65,7 @@ export default function Checkout() {
           Authorization: `Bearer ${userInfos.token}`,
         },
       };
-      const URL = "http://localhost:5000";
+      const URL = "https://projeto14-comic-heart.herokuapp.com";
       await axios.post(`${URL}/checkout`, objPost, config);
       Swal.fire({
         icon: "success",

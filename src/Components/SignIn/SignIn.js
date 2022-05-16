@@ -33,7 +33,7 @@ export default function SignIn() {
   function handleSubmit(e) {
     e.preventDefault();
     setSignInState(true);
-    const URL = "http://localhost:5000";
+    const URL = "https://projeto14-comic-heart.herokuapp.com";
     const promise = axios.post(`${URL}/`, userSignIn);
 
     promise.then(response => {
@@ -114,6 +114,14 @@ const SignInSection = styled.section`
     width: 283px;
     height: 47px;
     margin-bottom: 24px;
+
+    &:focus{
+      outline-color: #080;
+    }
+
+    &:focus:invalid{
+      outline-color:#FF0000;
+    }
 
     @media(min-width: 800px){
       width: 383px;

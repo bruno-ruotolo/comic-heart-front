@@ -25,7 +25,7 @@ export default function Header({ change }) {
         Authorization: `Bearer ${userInfos.token}`
       }
     }
-    const URL = "http://localhost:5000"
+    const URL = "https://projeto14-comic-heart.herokuapp.com"
     const promise = axios.get(`${URL}/header`, config);
     promise.then(response => {
       const cartArr = response.data;

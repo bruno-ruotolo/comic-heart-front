@@ -20,7 +20,7 @@ export default function Product() {
         Authorization: `Bearer ${userInfos.token}`,
       },
     };
-    const URL = "http://localhost:5000";
+    const URL = "https://projeto14-comic-heart.herokuapp.com";
     async function getProduct() {
       try {
         const promise = await axios.get(`${URL}/product/${id}`, config);
@@ -43,7 +43,7 @@ export default function Product() {
   }, [id, userInfos.token, navigate]);
 
   async function handleButton() {
-    const URL = "http://localhost:5000";
+    const URL = "https://projeto14-comic-heart.herokuapp.com";
     const config = {
       headers: {
         Authorization: `Bearer ${userInfos.token}`,

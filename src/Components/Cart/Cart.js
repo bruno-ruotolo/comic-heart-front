@@ -25,7 +25,7 @@ export default function Cart() {
         Authorization: `Bearer ${userInfos.token}`,
       },
     };
-    const URL = "http://localhost:5000";
+    const URL = "https://projeto14-comic-heart.herokuapp.com";
     async function getCart() {
       try {
         const cart = await axios.get(`${URL}/cart`, config);
@@ -61,7 +61,7 @@ export default function Cart() {
   }
 
   async function deleteProduct(productId) {
-    const URL = "http://localhost:5000";
+    const URL = "https://projeto14-comic-heart.herokuapp.com";
     const config = {
       headers: {
         Authorization: `Bearer ${userInfos.token}`,
@@ -86,7 +86,7 @@ export default function Cart() {
 
   async function handleQuant(productId, increaseQuant) {
     setCartStatus(true);
-    const URL = "http://localhost:5000";
+    const URL = "https://projeto14-comic-heart.herokuapp.com";
     const config = {
       headers: {
         Authorization: `Bearer ${userInfos.token}`,

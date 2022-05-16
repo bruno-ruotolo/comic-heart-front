@@ -27,7 +27,7 @@ export default function Main() {
         Authorization: `Bearer ${userInfos.token}`,
       },
     };
-    const URL = "http://localhost:5000"
+    const URL = "https://projeto14-comic-heart.herokuapp.com"
 
     if (state) {
       const { search } = state;
